@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ແຜງຄວບຄຸມແອດມິນ ຮ້ານຟູຈິ - Fuji Admin Panel</title>
+    <title>ແຜງຄວບຄຸມແອດມິນ ຮ້ານຟູຈິ - Fuji Admin Panel v2</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,34 +12,18 @@
         href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛠️</text></svg>">
 
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Noto Sans Lao', 'sans-serif'],
-                        tech: ['Space Grotesk', 'Noto Sans Lao', 'sans-serif'],
-                    },
-                    colors: {
-                        cyber: {
-                            900: '#030712', dark: '#0B1120',
-                            panel: 'rgba(15, 23, 42, 0.75)',
-                            neon: '#00f0ff', purple: '#8b5cf6',
-                            pink: '#ec4899', emerald: '#10b981'
-                        }
-                    },
-                    animation: {
-                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'glow-pulse': 'glowPulse 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                    },
-                    keyframes: {
-                        glowPulse: {
-                            '0%, 100%': {opacity: 0.8, filter: 'drop-shadow(0 0 10px rgba(0,240,255,0.6))'},
-                            '50%': {opacity: 1, filter: 'drop-shadow(0 0 22px rgba(0,240,255,0.9))'}
-                        }
-                    }
+                    fontFamily: {sans: ['Noto Sans Lao', 'sans-serif'], tech: ['Space Grotesk', 'Noto Sans Lao', 'sans-serif']},
+                    colors: {cyber: {900: '#030712', dark: '#0B1120', panel: 'rgba(15, 23, 42, 0.75)', neon: '#00f0ff', purple: '#8b5cf6', pink: '#ec4899', emerald: '#10b981'}},
+                    animation: {'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite', 'glow-pulse': 'glowPulse 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite'},
+                    keyframes: {glowPulse: {'0%, 100%': {opacity: 0.8, filter: 'drop-shadow(0 0 10px rgba(0,240,255,0.6))'}, '50%': {opacity: 1, filter: 'drop-shadow(0 0 22px rgba(0,240,255,0.9))'}}}
                 }
             }
         }
@@ -117,15 +101,20 @@
                 transform: translateY(0) scale(1);
             }
         }
+
+        .unanswered-filter-btn.active {
+            background: rgba(245, 158, 11, 0.2);
+            color: #fcd34d;
+            border-color: rgba(245, 158, 11, 0.5);
+        }
     </style>
 </head>
 
 <body class="flex flex-col h-screen overflow-hidden">
 
-    <!-- Top Navigation -->
     <header class="glass-nav h-16 shrink-0 px-4 sm:px-6 flex items-center justify-between z-30">
         <div class="flex items-center space-x-3">
-            <button id="mobile-menu-btn" class="md:hidden text-slate-400 hover:text-white p-2">
+            <button id="mobile-menu-btn" class="md:hidden text-slate-400 hover:text-white p-2" aria-label="ເປີດເມນູ">
                 <i class="fa-solid fa-bars text-xl"></i>
             </button>
             <div
@@ -139,10 +128,9 @@
                     class="font-extrabold text-base sm:text-lg text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-teal-200 to-indigo-300 leading-tight">
                     Fuji Admin Control Panel
                 </h1>
-                <p class="text-[11px] text-slate-400">ລະບົບຈັດການຂໍ້ມູນ ແລະ ຕອບຄຳຖາມລູກຄ້າຂອງ ຮ້ານຟູຈິ</p>
+                <p class="text-[11px] text-slate-400">ລະບົບຈັດການຂໍ້ມູນ ແລະ ສອນ AI v2.0</p>
             </div>
         </div>
-
         <div class="flex items-center space-x-3">
             <div
                 class="hidden sm:flex items-center gap-2 bg-slate-900/80 border border-slate-700/60 px-3 py-1.5 rounded-xl text-xs">
@@ -153,8 +141,7 @@
                 </span>
                 <span class="text-slate-300 font-medium">Firebase Live</span>
             </div>
-
-            <button onclick="seedDefaultData()" title="ເພີ່ມຂໍ້ມູນຄຳຖາມຕົວຢ່າງ"
+            <button onclick="seedDefaultData()" title="ເພີ່ມ FAQ ຕົວຢ່າງ"
                 class="bg-gradient-to-r from-amber-500/20 to-orange-500/20 hover:from-amber-500/30 hover:to-orange-500/30 border border-amber-500/40 text-amber-300 text-xs px-3 py-2 rounded-xl transition flex items-center gap-2 active:scale-95">
                 <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i>
                 <span class="hidden md:inline font-medium">Seed FAQ</span>
@@ -164,55 +151,51 @@
 
     <div class="flex flex-1 overflow-hidden relative">
 
-        <!-- Sidebar -->
         <aside id="sidebar"
             class="glass-sidebar w-64 flex-col justify-between hidden md:flex absolute md:relative z-20 h-full transition-all">
             <div class="p-4 space-y-1.5">
-                <div class="px-3 py-2 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
-                    ເມນູຫຼັກ (Navigation)
-                </div>
+                <div class="px-3 py-2 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">ເມນູຫຼັກ</div>
 
                 <button onclick="switchTab('overview')" id="tab-btn-overview"
                     class="tab-btn active w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl border border-transparent text-slate-300 hover:text-white hover:bg-slate-800/50 transition text-sm">
-                    <div class="flex items-center gap-3">
-                        <i class="fa-solid fa-chart-pie text-cyan-400 w-5"></i>
-                        <span>ພາບລວມ (Overview)</span>
-                    </div>
+                    <div class="flex items-center gap-3"><i
+                            class="fa-solid fa-chart-pie text-cyan-400 w-5"></i><span>ພາບລວມ</span></div>
                 </button>
 
                 <button onclick="switchTab('faqs')" id="tab-btn-faqs"
                     class="tab-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl border border-transparent text-slate-300 hover:text-white hover:bg-slate-800/50 transition text-sm">
-                    <div class="flex items-center gap-3">
-                        <i class="fa-solid fa-clipboard-question text-purple-400 w-5"></i>
-                        <span>ຈັດການ FAQ</span>
-                    </div>
+                    <div class="flex items-center gap-3"><i
+                            class="fa-solid fa-clipboard-question text-purple-400 w-5"></i><span>ຈັດການ FAQ</span></div>
                     <span id="badge-faq-count"
                         class="bg-cyan-950 text-cyan-300 border border-cyan-800 text-[11px] px-2 py-0.5 rounded-full font-mono">0</span>
                 </button>
 
+                <button onclick="switchTab('unanswered')" id="tab-btn-unanswered"
+                    class="tab-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl border border-transparent text-slate-300 hover:text-white hover:bg-slate-800/50 transition text-sm">
+                    <div class="flex items-center gap-3"><i
+                            class="fa-solid fa-circle-question text-amber-400 w-5"></i><span>ຄຳຖາມທີ່ຕອບບໍ່ໄດ້</span>
+                    </div>
+                    <span id="badge-unanswered-count"
+                        class="bg-slate-800 text-slate-400 border border-slate-700 text-[11px] px-2 py-0.5 rounded-full font-mono">0</span>
+                </button>
+
                 <button onclick="switchTab('feedback')" id="tab-btn-feedback"
                     class="tab-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl border border-transparent text-slate-300 hover:text-white hover:bg-slate-800/50 transition text-sm">
-                    <div class="flex items-center gap-3">
-                        <i class="fa-solid fa-comments text-pink-400 w-5"></i>
-                        <span>ຄວາມຄິດເຫັນລູກຄ້າ</span>
-                    </div>
+                    <div class="flex items-center gap-3"><i
+                            class="fa-solid fa-comments text-pink-400 w-5"></i><span>ຄວາມຄິດເຫັນ</span></div>
                     <span id="badge-feedback-count"
                         class="bg-pink-950 text-pink-300 border border-pink-800 text-[11px] px-2 py-0.5 rounded-full font-mono">0</span>
                 </button>
             </div>
 
             <div class="p-4 m-3 rounded-2xl bg-gradient-to-b from-slate-900/90 to-slate-950 border border-slate-800">
-                <div class="flex items-center gap-2 mb-2 text-xs font-semibold text-cyan-400">
-                    <i class="fa-solid fa-store"></i> ຂໍ້ມູນຮ້ານ Fuji Repair
-                </div>
-                <p class="text-[11px] text-slate-400 leading-relaxed mb-2">
-                    ຮ້ານແປງໂທລະສັບຟູຈິ ບໍລິການແປງທຸກອາການ, ປ່ຽນຈໍ, ປ່ຽນແບັດ, ປົດລັອກ.
-                </p>
-                <div class="text-[10px] text-slate-500 font-mono">Node: /faqs & /developer_feedback</div>
+                <div class="flex items-center gap-2 mb-2 text-xs font-semibold text-cyan-400"><i
+                        class="fa-solid fa-store"></i> ຮ້ານ Fuji Repair</div>
+                <p class="text-[11px] text-slate-400 leading-relaxed mb-2">ຮ້ານແປງໂທລະສັບຟູຈິ ບໍລິການແປງທຸກອາການ.</p>
+                <div class="text-[10px] text-slate-500 font-mono">/faqs /unanswered_queries /developer_feedback</div>
             </div>
         </aside>
 
-        <!-- Main Content -->
         <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-6">
 
             <!-- TAB 1: OVERVIEW -->
@@ -224,20 +207,18 @@
                     <div class="relative z-10">
                         <span
                             class="px-3 py-1 rounded-full text-xs font-semibold bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
-                            Fuji AI Smart Engine Dashboard
+                            Fuji AI Smart Engine v2.0
                         </span>
-                        <h2 class="text-2xl sm:text-3xl font-bold text-white mt-3 mb-2">
-                            ຍິນດີຕ້ອນຮັບສູ່ ແຜງຄວບຄຸມແອດມິນ 🛠️
+                        <h2 class="text-2xl sm:text-3xl font-bold text-white mt-3 mb-2">ຍິນດີຕ້ອນຮັບສູ່ ແຜງຄວບຄຸມ 🛠️
                         </h2>
                         <p class="text-slate-300 text-sm max-w-2xl leading-relaxed">
-                            ເພີ່ມ, ແກ້ໄຂ, ແລະ ກຳນົດການສະແດງຜົນ ຄຳຖາມ-ຄຳຕອບ (FAQ) ທີ່ຈະສະແດງໃນແອັບ AI ຂອງລູກຄ້າ ແບບ
-                            Real-time
+                            ຈັດການ FAQ, ຕອບຄຳຖາມທີ່ AI ຕອບບໍ່ໄດ້, ແລະ ສອນ AI ໃຫ້ເກັ່ງຂຶ້ນແບບ Real-time
                         </p>
                     </div>
                 </div>
 
                 <!-- Stats -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
                     <div class="glass-card p-5 rounded-2xl border border-slate-800">
                         <div class="flex justify-between items-start">
                             <div>
@@ -257,7 +238,7 @@
                     <div class="glass-card p-5 rounded-2xl border border-slate-800">
                         <div class="flex justify-between items-start">
                             <div>
-                                <p class="text-xs text-slate-400 font-medium">ສະແດງໃຫ້ສະມາຊິກ</p>
+                                <p class="text-xs text-slate-400 font-medium">ສະແດງ Chip</p>
                                 <h3 id="stat-visible-faqs" class="text-3xl font-bold text-emerald-400 mt-1 font-tech">0
                                 </h3>
                             </div>
@@ -267,15 +248,14 @@
                             </div>
                         </div>
                         <div class="mt-4 text-[11px] text-slate-400 flex items-center gap-1">
-                            <i class="fa-solid fa-star text-amber-400"></i>
-                            <span>ສະແດງເປັນ Chip</span>
+                            <i class="fa-solid fa-star text-amber-400"></i> ສະແດງໃນແອັບ
                         </div>
                     </div>
 
                     <div class="glass-card p-5 rounded-2xl border border-slate-800">
                         <div class="flex justify-between items-start">
                             <div>
-                                <p class="text-xs text-slate-400 font-medium">FAQ ທີ່ຖືກຊ່ອນ</p>
+                                <p class="text-xs text-slate-400 font-medium">FAQ ຊ່ອນ</p>
                                 <h3 id="stat-hidden-faqs" class="text-3xl font-bold text-slate-400 mt-1 font-tech">0
                                 </h3>
                             </div>
@@ -286,6 +266,23 @@
                         </div>
                         <div class="mt-4 text-[11px] text-slate-400 flex items-center gap-1">
                             <i class="fa-solid fa-ghost text-slate-400"></i> AI ຍັງຕອບໄດ້
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-5 rounded-2xl border border-amber-500/20">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-xs text-slate-400 font-medium">ລໍຖ້າຕອບ</p>
+                                <h3 id="stat-pending-queries" class="text-3xl font-bold text-amber-400 mt-1 font-tech">0
+                                </h3>
+                            </div>
+                            <div
+                                class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center border border-amber-500/20">
+                                <i class="fa-solid fa-circle-question text-lg"></i>
+                            </div>
+                        </div>
+                        <div class="mt-4 text-[11px] text-slate-400 flex items-center gap-1">
+                            <i class="fa-solid fa-lightbulb text-amber-400"></i> ໂອກາດສອນ AI
                         </div>
                     </div>
 
@@ -302,8 +299,24 @@
                             </div>
                         </div>
                         <div class="mt-4 text-[11px] text-slate-400 flex items-center gap-1">
-                            <i class="fa-solid fa-inbox text-pink-400"></i> ข้อความผู้พัฒนา
+                            <i class="fa-solid fa-inbox text-pink-400"></i> ຈາກລູກຄ້າ
                         </div>
+                    </div>
+                </div>
+
+                <!-- Pending Queries Preview -->
+                <div class="glass-card rounded-3xl p-6 border border-amber-500/20">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold text-slate-100 flex items-center gap-2 text-base">
+                            <i class="fa-solid fa-lightbulb text-amber-400"></i> ຄຳຖາມລໍຖ້າຕອບ (Top 5)
+                        </h3>
+                        <button onclick="switchTab('unanswered')"
+                            class="text-xs text-amber-400 hover:text-amber-300 font-medium flex items-center gap-1">
+                            ເບິ່ງທັງໝົດ <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                    <div id="overview-pending-list" class="space-y-2">
+                        <div class="text-center py-4 text-xs text-slate-500">ກຳລັງໂຫຼດ...</div>
                     </div>
                 </div>
 
@@ -311,7 +324,7 @@
                 <div class="glass-card rounded-3xl p-6 border border-slate-800">
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="font-bold text-slate-100 flex items-center gap-2 text-base">
-                            <i class="fa-solid fa-fire text-orange-400"></i> Top 5 ຄຳຖາມຍອດຮິດ (Most Asked)
+                            <i class="fa-solid fa-fire text-orange-400"></i> Top 5 ຄຳຖາມຍອດຮິດ
                         </h3>
                     </div>
                     <div id="top-faq-list" class="space-y-2">
@@ -342,10 +355,9 @@
                     class="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center glass-card p-5 rounded-3xl border border-slate-800">
                     <div>
                         <h2 class="text-xl font-bold text-white flex items-center gap-2">
-                            <i class="fa-solid fa-clipboard-question text-cyan-400"></i> ຈັດການຄຳຖາມ-ຄຳຕອບ (FAQ
-                            Database)
+                            <i class="fa-solid fa-clipboard-question text-cyan-400"></i> ຈັດການ FAQ
                         </h2>
-                        <p class="text-xs text-slate-400 mt-0.5">ເລືອກສະແດງ/ບໍ່ສະແດງ ຄຳຖາມໃນແອັບສະມາຊິກ</p>
+                        <p class="text-xs text-slate-400 mt-0.5">ເລືອກສະແດງ/ບໍ່ສະແດງ ຄຳຖາມໃນແອັບ</p>
                     </div>
                     <div class="flex items-center gap-2 w-full sm:w-auto">
                         <button onclick="exportCSV()" title="Export CSV"
@@ -354,13 +366,11 @@
                         </button>
                         <button onclick="openAddFAQModal()"
                             class="w-full sm:w-auto bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-medium text-xs px-4 py-2.5 rounded-xl transition shadow-lg shadow-cyan-500/20 flex items-center justify-center gap-2 active:scale-95">
-                            <i class="fa-solid fa-plus text-sm"></i>
-                            <span>ເພີ່ມ FAQ ໃໝ່</span>
+                            <i class="fa-solid fa-plus text-sm"></i><span>ເພີ່ມ FAQ ໃໝ່</span>
                         </button>
                     </div>
                 </div>
 
-                <!-- Filters -->
                 <div class="flex flex-col sm:flex-row gap-3">
                     <div class="relative flex-1">
                         <i
@@ -369,7 +379,6 @@
                             placeholder="ຄົ້ນຫາຄຳຖາມ ຫຼື ຄຳຕອບ..."
                             class="w-full bg-slate-900/90 text-xs text-slate-100 placeholder-slate-500 pl-9 pr-4 py-2.5 rounded-xl border border-slate-700/80 focus:outline-none focus:border-cyan-400 transition">
                     </div>
-
                     <select id="faq-category-filter" onchange="filterFAQs()"
                         class="bg-slate-900/90 text-xs text-slate-200 px-3 py-2.5 rounded-xl border border-slate-700/80 focus:outline-none focus:border-cyan-400">
                         <option value="ALL">ທຸກໝວດໝູ່</option>
@@ -379,16 +388,14 @@
                         <option value="ປະກັນ & ເວລາ">ປະກັນ & ເວລາ</option>
                         <option value="ທີ່ຕັ້ງ & ທົ່ວໄປ">ທີ່ຕັ້ງ & ທົ່ວໄປ</option>
                     </select>
-
                     <select id="faq-status-filter" onchange="filterFAQs()"
                         class="bg-slate-900/90 text-xs text-slate-200 px-3 py-2.5 rounded-xl border border-slate-700/80 focus:outline-none focus:border-cyan-400">
                         <option value="ALL">ທຸກສະຖານະ</option>
-                        <option value="VISIBLE">ສະແດງ Chip (Visible)</option>
-                        <option value="HIDDEN">ຊ່ອນ Chip (Hidden)</option>
+                        <option value="VISIBLE">ສະແດງ Chip</option>
+                        <option value="HIDDEN">ຊ່ອນ Chip</option>
                     </select>
                 </div>
 
-                <!-- FAQ Grid -->
                 <div id="faqs-grid-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="col-span-full text-center py-12 text-xs text-slate-500">
                         <i class="fa-solid fa-circle-notch animate-spin text-cyan-400 text-lg mb-2"></i>
@@ -397,14 +404,57 @@
                 </div>
             </div>
 
-            <!-- TAB 3: FEEDBACK -->
+            <!-- TAB 3: UNANSWERED QUERIES -->
+            <div id="view-unanswered" class="hidden space-y-6">
+                <div
+                    class="glass-card p-5 rounded-3xl border border-amber-500/20 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                    <div>
+                        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-circle-question text-amber-400"></i> ຄຳຖາມທີ່ AI ຕອບບໍ່ໄດ້
+                        </h2>
+                        <p class="text-xs text-slate-400 mt-0.5">ກົດ "ແປງເປັນ FAQ" ເພື່ອສອນ AI</p>
+                    </div>
+                    <button onclick="clearResolvedQueries()"
+                        class="text-xs text-slate-400 hover:text-white bg-slate-800/60 hover:bg-slate-700 border border-slate-700 px-3 py-2 rounded-xl transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-broom"></i> ລຶບທີ່ແກ້ແລ້ວ
+                    </button>
+                </div>
+
+                <div class="flex gap-2 flex-wrap">
+                    <button onclick="filterUnanswered('all')" id="uf-all"
+                        class="unanswered-filter-btn active px-3.5 py-2 rounded-xl text-xs font-medium border border-amber-500/40">
+                        <i class="fa-solid fa-list mr-1"></i> ທັງໝົດ
+                    </button>
+                    <button onclick="filterUnanswered('pending')" id="uf-pending"
+                        class="unanswered-filter-btn px-3.5 py-2 rounded-xl text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700 hover:bg-slate-700">
+                        <i class="fa-solid fa-clock mr-1"></i> ລໍຖ້າຕອບ
+                    </button>
+                    <button onclick="filterUnanswered('resolved')" id="uf-resolved"
+                        class="unanswered-filter-btn px-3.5 py-2 rounded-xl text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700 hover:bg-slate-700">
+                        <i class="fa-solid fa-check mr-1"></i> ແກ້ໄຂແລ້ວ
+                    </button>
+                    <button onclick="filterUnanswered('ignored')" id="uf-ignored"
+                        class="unanswered-filter-btn px-3.5 py-2 rounded-xl text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700 hover:bg-slate-700">
+                        <i class="fa-solid fa-eye-slash mr-1"></i> ບໍ່ສົນໃຈ
+                    </button>
+                </div>
+
+                <div id="unanswered-list-container" class="space-y-3">
+                    <div class="text-center py-12 text-xs text-slate-500">
+                        <i class="fa-solid fa-circle-notch animate-spin text-amber-400 text-lg mb-2"></i>
+                        <p>ກຳລັງໂຫຼດ...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 4: FEEDBACK -->
             <div id="view-feedback" class="hidden space-y-6">
                 <div class="glass-card p-5 rounded-3xl border border-slate-800 flex justify-between items-center">
                     <div>
                         <h2 class="text-xl font-bold text-white flex items-center gap-2">
                             <i class="fa-solid fa-comments text-pink-400"></i> ຄວາມຄິດເຫັນຈາກລູກຄ້າ
                         </h2>
-                        <p class="text-xs text-slate-400 mt-0.5">ຂໍ້ຄວາມທີ່ລູກຄ້າສົ່ງເຖິງຜູ້ພັດທະນາ</p>
+                        <p class="text-xs text-slate-400 mt-0.5">ຂໍ້ຄວາມທີ່ລູກຄ້າສົ່ງມາ</p>
                     </div>
                     <button onclick="clearAllFeedback()"
                         class="bg-rose-950/60 hover:bg-rose-900/80 text-rose-300 border border-rose-800/60 text-xs px-3 py-2 rounded-xl transition flex items-center gap-1.5 active:scale-95">
@@ -419,7 +469,7 @@
         </main>
     </div>
 
-    <!-- Modal: Add/Edit FAQ -->
+    <!-- Modal: Add/Edit/Convert FAQ -->
     <div id="faq-modal"
         class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
         <div class="glass-card w-full max-w-lg rounded-3xl border border-cyan-500/30 overflow-hidden shadow-2xl">
@@ -432,11 +482,18 @@
                 </button>
             </div>
 
-            <form id="faq-form" onsubmit="handleFAQSubmit(event)" class="p-6 space-y-4">
+            <form id="faq-form" onsubmit="handleFAQSubmit(event)" class="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
                 <input type="hidden" id="form-faq-id">
+                <input type="hidden" id="form-faq-source-query-id">
+
+                <div id="convert-info"
+                    class="hidden p-3 rounded-xl bg-amber-950/40 border border-amber-500/40 text-xs text-amber-200">
+                    <i class="fa-solid fa-wand-magic-sparkles mr-1"></i>
+                    ກຳລັງແປງຈາກຄຳຖາມຂອງລູກຄ້າ — ກະລຸນາຕື່ມຄຳຕອບໃຫ້ຄົບ
+                </div>
 
                 <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">ໝວດໝູ່ (Category)</label>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">ໝວດໝູ່</label>
                     <select id="form-faq-category" required
                         class="w-full bg-slate-900 text-xs text-slate-100 rounded-xl px-3.5 py-2.5 border border-slate-700 focus:outline-none focus:border-cyan-400">
                         <option value="ປ່ຽນໜ້າຈໍ">ປ່ຽນໜ້າຈໍ (Screen)</option>
@@ -448,30 +505,28 @@
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">ຄຳຖາມ (Question)</label>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">ຄຳຖາມ</label>
                     <input type="text" id="form-faq-question" required
                         placeholder="ເຊັ່ນ: ປ່ຽນໜ້າຈໍ iPhone 13 ລາຄາເທົ່າໃດ?"
                         class="w-full bg-slate-900 text-xs text-slate-100 rounded-xl px-3.5 py-2.5 border border-slate-700 focus:outline-none focus:border-cyan-400">
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">ຄຳຕອບ (Answer - HTML ได้)</label>
-                    <textarea id="form-faq-answer" rows="4" required
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">ຄຳຕອບ (HTML ได้)</label>
+                    <textarea id="form-faq-answer" rows="5" required
                         placeholder="ເຊັ່ນ: 📱 ປ່ຽນໜ້າຈໍ iPhone 13 ລາຄາ 950,000 ກີບ..."
                         class="w-full bg-slate-900 text-xs text-slate-100 rounded-xl px-3.5 py-2.5 border border-slate-700 focus:outline-none focus:border-cyan-400"></textarea>
                 </div>
 
-                <!-- ⭐ Checkbox เดียวคุมการแสดงผล -->
                 <label
                     class="flex items-start gap-3 p-4 rounded-xl bg-gradient-to-r from-amber-950/40 to-orange-950/40 border-2 border-amber-500/40 cursor-pointer hover:border-amber-400 transition">
                     <input type="checkbox" id="form-faq-show-chip" class="w-5 h-5 accent-amber-500 mt-0.5">
                     <div class="flex-1">
                         <div class="text-sm font-bold text-amber-200 flex items-center gap-2">
-                            <i class="fa-solid fa-star text-amber-400"></i>
-                            แสดงเป็นคำถามยอดฮิตให้สมาชิกเห็น
+                            <i class="fa-solid fa-star text-amber-400"></i> ສະແດງເປັນ Chip
                         </div>
                         <div class="text-[11px] text-amber-300/70 mt-1 leading-relaxed">
-                            ✅ ຕິກ → ສະມາຊິກເຫັນ Chip ດ້ານລຸ່ມແອັບ<br>
+                            ✅ ຕິກ → ລູກຄ້າເຫັນ Chip<br>
                             ❌ ບໍ່ຕິກ → ຊ່ອນ Chip ແຕ່ AI ຍັງຄົ້ນຫາເຈີ
                         </div>
                     </div>
@@ -504,7 +559,7 @@
     <!-- Firebase -->
     <script type="module">
         import {initializeApp} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import {getDatabase, ref, onValue, push, set, remove, update} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import {getDatabase, ref, onValue, push, set, remove, update, get} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCPlKQmGJZxWaea_6y-h5lRGL5PSGw861M",
@@ -521,28 +576,40 @@
 
         let rawFAQs = [];
         let rawFeedback = [];
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        let rawUnanswered = [];
+        let currentUnansweredFilter = 'all';
+        let audioCtx = null;
+
+        function getAudioCtx() {
+            if (!audioCtx) {
+                try {audioCtx = new (window.AudioContext || window.webkitAudioContext)();}
+                catch (e) {return null;}
+            }
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            return audioCtx;
+        }
 
         function playSound(type) {
+            const ctx = getAudioCtx();
+            if (!ctx) return;
             try {
-                if (audioCtx.state === 'suspended') audioCtx.resume();
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.connect(gain); gain.connect(audioCtx.destination);
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain); gain.connect(ctx.destination);
                 if (type === 'success') {
                     osc.type = 'sine';
-                    osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
-                    osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.08);
-                    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
-                    osc.start(); osc.stop(audioCtx.currentTime + 0.2);
+                    osc.frequency.setValueAtTime(523.25, ctx.currentTime);
+                    osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.08);
+                    gain.gain.setValueAtTime(0.1, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2);
+                    osc.start(); osc.stop(ctx.currentTime + 0.2);
                 } else if (type === 'delete') {
                     osc.type = 'sawtooth';
-                    osc.frequency.setValueAtTime(300, audioCtx.currentTime);
-                    osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.15);
-                    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
-                    osc.start(); osc.stop(audioCtx.currentTime + 0.15);
+                    osc.frequency.setValueAtTime(300, ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.15);
+                    gain.gain.setValueAtTime(0.1, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
+                    osc.start(); osc.stop(ctx.currentTime + 0.15);
                 }
             } catch (e) { }
         }
@@ -550,30 +617,31 @@
         // ===== LISTENERS =====
         const faqsRef = ref(db, 'faqs');
         onValue(faqsRef, (snapshot) => {
-            const data = snapshot.val();
-            rawFAQs = [];
-            if (data) {
-                Object.keys(data).forEach(id => {
-                    const d = data[id];
-                    rawFAQs.push({
-                        id,
-                        question: d.question || d.q || '',
-                        answer: d.answer || d.a || '',
-                        category: d.category || 'ທີ່ຕັ້ງ & ທົ່ວໄປ',
-                        isPinned: d.isPinned === true, // ⭐ ใช้ isPinned เป็นตัวคุม chip
-                        usageCount: d.usageCount || 0,
-                        createdAt: d.createdAt || 0,
+            try {
+                const data = snapshot.val();
+                rawFAQs = [];
+                if (data) {
+                    Object.keys(data).forEach(id => {
+                        const d = data[id];
+                        rawFAQs.push({
+                            id,
+                            question: d.question || d.q || '',
+                            answer: d.answer || d.a || '',
+                            category: d.category || 'ທີ່ຕັ້ງ & ທົ່ວໄປ',
+                            isPinned: d.isPinned === true,
+                            usageCount: d.usageCount || 0,
+                            createdAt: d.createdAt || 0,
+                        });
                     });
-                });
-                // เรียง: pinned ขึ้นก่อน, จากนั้นตาม usage
-                rawFAQs.sort((a, b) => {
-                    if (a.isPinned !== b.isPinned) return b.isPinned ? 1 : -1;
-                    return (b.usageCount || 0) - (a.usageCount || 0);
-                });
-            }
-            updateStats();
-            renderFAQs();
-            renderTopFAQ();
+                    rawFAQs.sort((a, b) => {
+                        if (a.isPinned !== b.isPinned) return b.isPinned ? 1 : -1;
+                        return (b.usageCount || 0) - (a.usageCount || 0);
+                    });
+                }
+                updateStats();
+                renderFAQs();
+                renderTopFAQ();
+            } catch (e) {console.error('FAQ listener:', e);}
         });
 
         const feedbackRef = ref(db, 'developer_feedback');
@@ -589,20 +657,57 @@
             renderRecentFeedbackPreview();
         });
 
+        const unansweredRef = ref(db, 'unanswered_queries');
+        onValue(unansweredRef, (snapshot) => {
+            const data = snapshot.val();
+            rawUnanswered = [];
+            if (data) {
+                Object.keys(data).forEach(id => rawUnanswered.push({id, ...data[id]}));
+                // เรียง: pending ก่อน, แล้วตาม lastAskedAt
+                rawUnanswered.sort((a, b) => {
+                    const statusOrder = {pending: 0, resolved: 1, ignored: 2};
+                    const aO = statusOrder[a.status] ?? 1;
+                    const bO = statusOrder[b.status] ?? 1;
+                    if (aO !== bO) return aO - bO;
+                    return new Date(b.lastAskedAt || b.timestamp) - new Date(a.lastAskedAt || a.timestamp);
+                });
+            }
+            updateStats();
+            updateUnansweredBadge();
+            renderUnansweredList();
+            renderOverviewPending();
+        });
+
         // ===== STATS =====
         function updateStats() {
             const visible = rawFAQs.filter(f => f.isPinned).length;
             const hidden = rawFAQs.filter(f => !f.isPinned).length;
+            const pending = rawUnanswered.filter(q => q.status === 'pending').length;
 
             document.getElementById('stat-total-faqs').innerText = rawFAQs.length;
             document.getElementById('stat-visible-faqs').innerText = visible;
             document.getElementById('stat-hidden-faqs').innerText = hidden;
             document.getElementById('stat-total-feedback').innerText = rawFeedback.length;
+            document.getElementById('stat-pending-queries').innerText = pending;
             document.getElementById('badge-faq-count').innerText = rawFAQs.length;
             document.getElementById('badge-feedback-count').innerText = rawFeedback.length;
         }
 
-        // ===== RENDER FAQS =====
+        function updateUnansweredBadge() {
+            const pending = rawUnanswered.filter(q => q.status === 'pending').length;
+            const badge = document.getElementById('badge-unanswered-count');
+            if (!badge) return;
+            badge.innerText = pending;
+            if (pending === 0) {
+                badge.className = "bg-slate-800 text-slate-400 border border-slate-700 text-[11px] px-2 py-0.5 rounded-full font-mono";
+            } else if (pending >= 10) {
+                badge.className = "bg-rose-950 text-rose-300 border border-rose-800 text-[11px] px-2 py-0.5 rounded-full font-mono animate-pulse";
+            } else {
+                badge.className = "bg-amber-950 text-amber-300 border border-amber-800 text-[11px] px-2 py-0.5 rounded-full font-mono";
+            }
+        }
+
+        // ===== RENDER: FAQS =====
         function renderFAQs() {
             const container = document.getElementById('faqs-grid-container');
             const searchVal = document.getElementById('faq-search-input').value.toLowerCase().trim();
@@ -622,7 +727,7 @@
                 container.innerHTML = `
                     <div class="col-span-full text-center py-12 glass-card rounded-2xl border border-slate-800">
                         <i class="fa-solid fa-folder-open text-slate-600 text-3xl mb-2"></i>
-                        <p class="text-xs text-slate-400">ບໍ່ພົບຂໍ້ມູນ FAQ</p>
+                        <p class="text-xs text-slate-400">ບໍ່ພົບ FAQ</p>
                     </div>`;
                 return;
             }
@@ -630,11 +735,9 @@
             container.innerHTML = filtered.map(faq => {
                 const isPinned = faq.isPinned;
                 const usage = faq.usageCount || 0;
-                const cardClass = isPinned
-                    ? 'border-amber-500/50 bg-amber-950/10'
-                    : 'border-slate-800/80';
+                const cardClass = isPinned ? 'border-amber-500/50 bg-amber-950/10' : 'border-slate-800/80';
                 return `
-                <div class="glass-card p-4 rounded-2xl border ${cardClass} hover:border-cyan-500/40 transition flex flex-col justify-between space-y-3 group faq-card-enter relative">
+                <div class="glass-card p-4 rounded-2xl border ${cardClass} hover:border-cyan-500/40 transition flex flex-col justify-between space-y-3 faq-card-enter">
                     <div class="flex items-center justify-between gap-2 flex-wrap">
                         <span class="text-[10px] font-medium bg-slate-900 text-cyan-300 border border-slate-700 px-2.5 py-0.5 rounded-full">
                             <i class="fa-solid fa-tag text-[9px] mr-1"></i>${escapeHtml(faq.category)}
@@ -642,36 +745,21 @@
                         <div class="flex items-center gap-1.5">
                             ${isPinned
                         ? '<span class="text-[9px] bg-amber-950 text-amber-300 border border-amber-700 px-2 py-0.5 rounded-full font-bold"><i class="fa-solid fa-star mr-1"></i>ສະແດງ Chip</span>'
-                        : '<span class="text-[9px] bg-slate-800 text-slate-400 border border-slate-700 px-2 py-0.5 rounded-full font-bold"><i class="fa-solid fa-eye-slash mr-1"></i>ຊ່ອນ Chip</span>'
-                    }
+                        : '<span class="text-[9px] bg-slate-800 text-slate-400 border border-slate-700 px-2 py-0.5 rounded-full font-bold"><i class="fa-solid fa-eye-slash mr-1"></i>ຊ່ອນ Chip</span>'}
                             <span class="text-[10px] text-slate-500 font-mono"><i class="fa-solid fa-fire text-orange-500"></i> ${usage}</span>
                         </div>
                     </div>
-
                     <div>
-                        <h4 class="font-bold text-slate-100 text-xs sm:text-sm mb-2 leading-snug">
-                            ❓ ${escapeHtml(faq.question)}
-                        </h4>
-                        <div class="text-xs text-slate-300 bg-slate-950/60 p-3 rounded-xl border border-slate-800/80 leading-relaxed max-h-32 overflow-y-auto">
-                            💡 ${faq.answer}
-                        </div>
+                        <h4 class="font-bold text-slate-100 text-xs sm:text-sm mb-2 leading-snug">❓ ${escapeHtml(faq.question)}</h4>
+                        <div class="text-xs text-slate-300 bg-slate-950/60 p-3 rounded-xl border border-slate-800/80 leading-relaxed max-h-32 overflow-y-auto">💡 ${faq.answer}</div>
                     </div>
-
                     <div class="flex items-center justify-between pt-2 border-t border-slate-800/60">
-                        <div class="flex items-center gap-1.5">
-                            <button onclick="togglePinned('${faq.id}')" title="${isPinned ? 'ซ่อน Chip' : 'แสดง Chip'}"
-                                class="px-3 py-1.5 rounded-lg text-[10px] font-medium border transition ${isPinned ? 'bg-amber-950/60 text-amber-300 border-amber-700/60 hover:bg-amber-900/80' : 'bg-slate-800 text-slate-300 border-slate-700 hover:text-amber-400'}">
-                                <i class="fa-solid ${isPinned ? 'fa-star' : 'fa-star-of-life'} mr-1"></i>
-                                ${isPinned ? 'ສະແດງຢູ່' : 'ບໍ່ສະແດງ'}
-                            </button>
-                        </div>
+                        <button onclick="togglePinned('${faq.id}')" class="px-3 py-1.5 rounded-lg text-[10px] font-medium border transition ${isPinned ? 'bg-amber-950/60 text-amber-300 border-amber-700/60 hover:bg-amber-900/80' : 'bg-slate-800 text-slate-300 border-slate-700 hover:text-amber-400'}">
+                            <i class="fa-solid ${isPinned ? 'fa-star' : 'fa-star-of-life'} mr-1"></i>${isPinned ? 'ສະແດງຢູ່' : 'ບໍ່ສະແດງ'}
+                        </button>
                         <div class="flex items-center gap-1">
-                            <button onclick="openEditFAQModal('${faq.id}')" title="ແກ້ໄຂ" class="p-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-cyan-400 hover:bg-slate-700 text-xs">
-                                <i class="fa-solid fa-pen"></i>
-                            </button>
-                            <button onclick="deleteFAQ('${faq.id}')" title="ລົບ" class="p-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-rose-400 hover:bg-slate-700 text-xs">
-                                <i class="fa-solid fa-trash-can"></i>
-                            </button>
+                            <button onclick="openEditFAQModal('${faq.id}')" title="ແກ້ໄຂ" class="p-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-cyan-400 hover:bg-slate-700 text-xs"><i class="fa-solid fa-pen"></i></button>
+                            <button onclick="deleteFAQ('${faq.id}')" title="ລົບ" class="p-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-rose-400 hover:bg-slate-700 text-xs"><i class="fa-solid fa-trash-can"></i></button>
                         </div>
                     </div>
                 </div>`;
@@ -682,7 +770,7 @@
             const container = document.getElementById('top-faq-list');
             const top5 = [...rawFAQs].sort((a, b) => (b.usageCount || 0) - (a.usageCount || 0)).slice(0, 5);
             if (top5.length === 0 || top5.every(f => !f.usageCount)) {
-                container.innerHTML = `<div class="text-center py-4 text-xs text-slate-500">ຍັງບໍ່ມີຂໍ້ມູນການໃຊ້ງານ</div>`;
+                container.innerHTML = `<div class="text-center py-4 text-xs text-slate-500">ຍັງບໍ່ມີຂໍ້ມູນ</div>`;
                 return;
             }
             container.innerHTML = top5.map((faq, i) => {
@@ -699,14 +787,124 @@
             }).join('');
         }
 
+        // ===== RENDER: UNANSWERED =====
+        function renderUnansweredList() {
+            const container = document.getElementById('unanswered-list-container');
+            if (!container) return;
+
+            const filtered = rawUnanswered.filter(q => {
+                if (currentUnansweredFilter === 'all') return true;
+                return q.status === currentUnansweredFilter;
+            });
+
+            if (filtered.length === 0) {
+                const msg = currentUnansweredFilter === 'pending'
+                    ? 'ບໍ່ມີຄຳຖາມລໍຖ້າຕອບ — AI ຂອງທ່ານຕອບໄດ້ໝົດແລ້ວ 🎉'
+                    : 'ບໍ່ມີຂໍ້ມູນ';
+                container.innerHTML = `
+                    <div class="text-center py-12 glass-card rounded-2xl border border-slate-800">
+                        <i class="fa-solid fa-check-circle text-emerald-500 text-4xl mb-3"></i>
+                        <p class="text-sm text-slate-300 font-medium">${msg}</p>
+                    </div>`;
+                return;
+            }
+
+            container.innerHTML = filtered.map(q => {
+                const statusBadge = {
+                    pending: '<span class="text-[10px] bg-amber-950 text-amber-300 border border-amber-800 px-2 py-0.5 rounded-full font-bold"><i class="fa-solid fa-clock mr-1"></i>ລໍຖ້າ</span>',
+                    resolved: '<span class="text-[10px] bg-emerald-950 text-emerald-300 border border-emerald-800 px-2 py-0.5 rounded-full font-bold"><i class="fa-solid fa-check mr-1"></i>ແກ້ໄຂແລ້ວ</span>',
+                    ignored: '<span class="text-[10px] bg-slate-800 text-slate-400 border border-slate-700 px-2 py-0.5 rounded-full font-bold"><i class="fa-solid fa-eye-slash mr-1"></i>ບໍ່ສົນ</span>'
+                }[q.status] || '';
+
+                const countBadge = (q.count || 1) > 1
+                    ? `<span class="text-[10px] bg-orange-950 text-orange-300 border border-orange-800 px-2 py-0.5 rounded-full font-bold"><i class="fa-solid fa-fire mr-1"></i>x${q.count}</span>`
+                    : '';
+
+                const timeAgo = formatTimeAgo(q.lastAskedAt || q.timestamp);
+                const closest = q.closestQuestion
+                    ? `<div class="text-[10px] text-slate-500 mt-1"><i class="fa-solid fa-arrow-right text-slate-600 mr-1"></i>ໃກ້ຄຽງ: "${escapeHtml(q.closestQuestion)}" <span class="text-slate-600">(${Math.round((q.closestScore || 0) * 100)}%)</span></div>`
+                    : '';
+
+                const actions = q.status === 'pending'
+                    ? `<div class="flex gap-1.5">
+                        <button onclick="openConvertToFAQModal('${q.id}')" class="flex-1 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-white text-[11px] font-bold px-3 py-2 rounded-lg shadow-md shadow-amber-500/30 transition active:scale-95 flex items-center justify-center gap-1">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> ແປງເປັນ FAQ
+                        </button>
+                        <button onclick="ignoreQuery('${q.id}')" title="ບໍ່ສົນໃຈ" class="bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-slate-200 border border-slate-700 px-2.5 py-2 rounded-lg transition">
+                            <i class="fa-solid fa-eye-slash text-xs"></i>
+                        </button>
+                        <button onclick="deleteQuery('${q.id}')" title="ລົບ" class="bg-rose-950/40 hover:bg-rose-900/60 text-rose-400 border border-rose-800/50 px-2.5 py-2 rounded-lg transition">
+                            <i class="fa-solid fa-trash text-xs"></i>
+                        </button>
+                       </div>`
+                    : `<div class="flex gap-1.5 flex-wrap">
+                        ${q.status === 'resolved' && q.resolvedFaqId
+                        ? `<button onclick="viewResolvedFAQ('${q.resolvedFaqId}')" class="text-[10px] text-emerald-400 hover:text-emerald-300 px-2 py-1 rounded bg-emerald-950/40 border border-emerald-800/50"><i class="fa-solid fa-eye mr-1"></i>ເບິ່ງ FAQ</button>`
+                        : ''}
+                        <button onclick="restoreQuery('${q.id}')" title="ຄືນສະຖານະ" class="text-[10px] text-slate-400 hover:text-white px-2 py-1 rounded bg-slate-800 border border-slate-700"><i class="fa-solid fa-rotate-left mr-1"></i>ຄືນ</button>
+                        <button onclick="deleteQuery('${q.id}')" title="ລົບ" class="text-[10px] text-rose-400 hover:text-rose-300 px-2 py-1 rounded bg-rose-950/40 border border-rose-800/50"><i class="fa-solid fa-trash"></i></button>
+                       </div>`;
+
+                return `
+                <div class="glass-card p-4 rounded-2xl border ${q.status === 'pending' ? 'border-amber-500/30 bg-amber-950/5' : 'border-slate-800'} faq-card-enter">
+                    <div class="flex items-start justify-between gap-3 mb-2">
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 flex-wrap mb-1">
+                                ${statusBadge}${countBadge}
+                                <span class="text-[10px] text-slate-500 font-mono"><i class="fa-regular fa-clock mr-1"></i>${timeAgo}</span>
+                                ${q.emotion && q.emotion !== 'neutral' ? `<span class="text-[10px]">${getEmotionEmoji(q.emotion)}</span>` : ''}
+                            </div>
+                            <p class="text-sm font-bold text-slate-100 leading-snug break-words">"${escapeHtml(q.query)}"</p>
+                            ${closest}
+                        </div>
+                    </div>
+                    <div class="pt-2 border-t border-slate-800/60">${actions}</div>
+                </div>`;
+            }).join('');
+        }
+
+        function renderOverviewPending() {
+            const container = document.getElementById('overview-pending-list');
+            if (!container) return;
+            const pending = rawUnanswered.filter(q => q.status === 'pending').slice(0, 5);
+            if (pending.length === 0) {
+                container.innerHTML = `<div class="text-center py-4 text-xs text-emerald-400"><i class="fa-solid fa-check-circle mr-1"></i>AI ຕອບໄດ້ໝົດແລ້ວ 🎉</div>`;
+                return;
+            }
+            container.innerHTML = pending.map(q => `
+                <div class="flex items-center gap-3 p-3 rounded-xl bg-amber-950/20 border border-amber-500/20">
+                    <i class="fa-solid fa-circle-question text-amber-400 shrink-0"></i>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-xs text-slate-200 truncate font-medium">"${escapeHtml(q.query)}"</p>
+                        <p class="text-[10px] text-slate-500 mt-0.5">${formatTimeAgo(q.lastAskedAt || q.timestamp)} ${q.count > 1 ? `· x${q.count}` : ''}</p>
+                    </div>
+                    <button onclick="openConvertToFAQModal('${q.id}')" class="shrink-0 text-[10px] bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold px-2.5 py-1.5 rounded-lg transition">
+                        ຕອບ
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function formatTimeAgo(isoString) {
+            if (!isoString) return 'ບໍ່ຮູ້';
+            const diff = Date.now() - new Date(isoString).getTime();
+            const mins = Math.floor(diff / 60000);
+            if (mins < 1) return 'ຕອນນີ້';
+            if (mins < 60) return `${mins} ນາທີກ່ອນ`;
+            const hours = Math.floor(mins / 60);
+            if (hours < 24) return `${hours} ຊົ່ວໂມງກ່ອນ`;
+            return `${Math.floor(hours / 24)} ມື້ກ່ອນ`;
+        }
+
+        function getEmotionEmoji(emotion) {
+            return {angry: '😡', happy: '😊', sad: '🥺', neutral: '😐'}[emotion] || '';
+        }
+
+        // ===== RENDER: FEEDBACK =====
         function renderFeedbackList() {
             const container = document.getElementById('feedback-list-container');
             if (rawFeedback.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-12 glass-card rounded-2xl border border-slate-800">
-                        <i class="fa-solid fa-inbox text-slate-600 text-3xl mb-2"></i>
-                        <p class="text-xs text-slate-400">ຍັງບໍ່ມີຂໍ້ຄວາມ</p>
-                    </div>`;
+                container.innerHTML = `<div class="text-center py-12 glass-card rounded-2xl border border-slate-800"><i class="fa-solid fa-inbox text-slate-600 text-3xl mb-2"></i><p class="text-xs text-slate-400">ຍັງບໍ່ມີຂໍ້ຄວາມ</p></div>`;
                 return;
             }
             container.innerHTML = rawFeedback.map(item => `
@@ -717,7 +915,7 @@
                             <span class="text-[10px] text-slate-500 font-mono">${escapeHtml(item.clientTime || item.timestamp || '')}</span>
                         </div>
                         <p class="text-xs sm:text-sm text-slate-100 font-medium leading-relaxed">💬 "${escapeHtml(item.message)}"</p>
-                        <div class="text-[10px] text-slate-500 truncate max-w-md">Device: ${escapeHtml(item.deviceInfo || 'Unknown')}</div>
+                        <div class="text-[10px] text-slate-500 truncate max-w-md">Device: ${escapeHtml(item.device || 'Unknown')}</div>
                     </div>
                     <button onclick="deleteFeedback('${item.id}')" class="shrink-0 text-xs text-rose-400 hover:text-rose-300 bg-rose-950/40 hover:bg-rose-900/60 border border-rose-800/50 px-3 py-1.5 rounded-xl transition flex items-center gap-1">
                         <i class="fa-solid fa-trash"></i> ລົບ
@@ -739,26 +937,60 @@
                 </div>`).join('');
         }
 
-        // ===== ACTIONS =====
+        // ===== FAQ ACTIONS =====
         window.openAddFAQModal = function () {
-            document.getElementById('modal-title').innerText = "ເພີ່ມ FAQ ໃໝ່";
+            document.getElementById('modal-title').innerHTML = '<i class="fa-solid fa-pen-to-square text-cyan-400"></i> ເພີ່ມ FAQ ໃໝ່';
             document.getElementById('form-faq-id').value = '';
+            document.getElementById('form-faq-source-query-id').value = '';
             document.getElementById('form-faq-question').value = '';
             document.getElementById('form-faq-answer').value = '';
             document.getElementById('form-faq-category').value = 'ປ່ຽນໜ້າຈໍ';
-            document.getElementById('form-faq-show-chip').checked = false; // default = ไม่แสดง
+            document.getElementById('form-faq-show-chip').checked = false;
+            document.getElementById('convert-info').classList.add('hidden');
             document.getElementById('faq-modal').classList.remove('hidden');
         };
 
         window.openEditFAQModal = function (id) {
             const faq = rawFAQs.find(f => f.id === id);
             if (!faq) return;
-            document.getElementById('modal-title').innerText = "ແກ້ໄຂ FAQ";
+            document.getElementById('modal-title').innerHTML = '<i class="fa-solid fa-pen-to-square text-cyan-400"></i> ແກ້ໄຂ FAQ';
             document.getElementById('form-faq-id').value = faq.id;
+            document.getElementById('form-faq-source-query-id').value = '';
             document.getElementById('form-faq-question').value = faq.question;
             document.getElementById('form-faq-answer').value = faq.answer;
             document.getElementById('form-faq-category').value = faq.category || 'ປ່ຽນໜ້າຈໍ';
-            document.getElementById('form-faq-show-chip').checked = faq.isPinned; // ⭐ ใช้ isPinned
+            document.getElementById('form-faq-show-chip').checked = faq.isPinned;
+            document.getElementById('convert-info').classList.add('hidden');
+            document.getElementById('faq-modal').classList.remove('hidden');
+        };
+
+        // ⭐ Convert from unanswered query
+        window.openConvertToFAQModal = function (queryId) {
+            const q = rawUnanswered.find(x => x.id === queryId);
+            if (!q) return;
+
+            document.getElementById('modal-title').innerHTML = '<i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i> ແປງຄຳຖາມເປັນ FAQ';
+            document.getElementById('form-faq-id').value = '';
+            document.getElementById('form-faq-source-query-id').value = queryId;
+            document.getElementById('form-faq-question').value = q.query;
+            document.getElementById('form-faq-show-chip').checked = true;
+            document.getElementById('convert-info').classList.remove('hidden');
+
+            // Pre-fill category + answer จาก closest
+            if (q.closestFaqId) {
+                const closest = rawFAQs.find(f => f.id === q.closestFaqId);
+                if (closest) {
+                    document.getElementById('form-faq-category').value = closest.category || 'ທີ່ຕັ້ງ & ທົ່ວໄປ';
+                    document.getElementById('form-faq-answer').value = closest.answer;
+                } else {
+                    document.getElementById('form-faq-category').value = 'ທີ່ຕັ້ງ & ທົ່ວໄປ';
+                    document.getElementById('form-faq-answer').value = '';
+                }
+            } else {
+                document.getElementById('form-faq-category').value = 'ທີ່ຕັ້ງ & ທົ່ວໄປ';
+                document.getElementById('form-faq-answer').value = '';
+            }
+
             document.getElementById('faq-modal').classList.remove('hidden');
         };
 
@@ -769,26 +1001,39 @@
         window.handleFAQSubmit = async function (e) {
             e.preventDefault();
             const id = document.getElementById('form-faq-id').value;
+            const sourceQueryId = document.getElementById('form-faq-source-query-id').value;
             const category = document.getElementById('form-faq-category').value;
             const question = document.getElementById('form-faq-question').value.trim();
             const answer = document.getElementById('form-faq-answer').value.trim();
-            const isPinned = document.getElementById('form-faq-show-chip').checked; // ⭐ ตัวคุม chip
+            const isPinned = document.getElementById('form-faq-show-chip').checked;
 
             if (!question || !answer) return;
 
             try {
                 if (id) {
                     await update(ref(db, `faqs/${id}`), {category, question, answer, isPinned});
-                    showToast(isPinned ? "ແກ້ໄຂສຳເລັດ! ⭐ ຈະສະແດງໃຫ້ສະມາຊິກ" : "ແກ້ໄຂສຳເລັດ! ຈະບໍ່ສະແດງ chip");
+                    showToast(isPinned ? "ແກ້ໄຂສຳເລັດ! ⭐" : "ແກ້ໄຂສຳເລັດ!");
                 } else {
                     const newRef = push(ref(db, 'faqs'));
+                    const newFaqId = newRef.key;
                     await set(newRef, {
-                        category, question, answer,
-                        isPinned,          // ⭐ true = แสดง chip, false = ซ่อน chip
-                        isHidden: false,   // backward compat
-                        usageCount: 0, createdAt: Date.now()
+                        category, question, answer, isPinned,
+                        isHidden: false,
+                        usageCount: 0,
+                        createdAt: Date.now(),
+                        sourceQueryId: sourceQueryId || null,
                     });
-                    showToast(isPinned ? "ເພີ່ມສຳເລັດ! ⭐ ຈະສະແດງໃຫ້ສະມາຊິກ" : "ເພີ່ມສຳເລັດ! ຈະບໍ່ສະແດງ chip");
+
+                    if (sourceQueryId) {
+                        await update(ref(db, `unanswered_queries/${sourceQueryId}`), {
+                            status: 'resolved',
+                            resolvedFaqId: newFaqId,
+                            resolvedAt: new Date().toISOString(),
+                        });
+                        showToast("✅ ແປງເປັນ FAQ ສຳເລັດ! AI ຮຽນຮູ້ແລ້ວ 🎉");
+                    } else {
+                        showToast(isPinned ? "ເພີ່ມສຳເລັດ! ⭐" : "ເພີ່ມສຳເລັດ!");
+                    }
                 }
                 playSound('success');
                 closeFAQModal();
@@ -804,7 +1049,7 @@
             try {
                 await update(ref(db, `faqs/${id}`), {isPinned: !faq.isPinned});
                 playSound('success');
-                showToast(faq.isPinned ? "🙈 ຊ່ອນ chip ຈາກສະມາຊິກແລ້ວ" : "⭐ ສະແດງ chip ໃຫ້ສະມາຊິກແລ້ວ");
+                showToast(faq.isPinned ? "🙈 ຊ່ອນ chip ແລ້ວ" : "⭐ ສະແດງ chip ແລ້ວ");
             } catch (e) {showToast("ຜິດພາດ", "error");}
         };
 
@@ -834,12 +1079,77 @@
             } catch (e) {showToast("ຜິດພາດ", "error");}
         };
 
+        // ===== UNANSWERED ACTIONS =====
+        window.ignoreQuery = async function (id) {
+            try {
+                await update(ref(db, `unanswered_queries/${id}`), {
+                    status: 'ignored',
+                    ignoredAt: new Date().toISOString(),
+                });
+                showToast("ຕັ້ງເປັນ 'ບໍ່ສົນໃຈ' ແລ້ວ");
+            } catch (e) {showToast("ຜິດພາດ", "error");}
+        };
+
+        window.restoreQuery = async function (id) {
+            try {
+                await update(ref(db, `unanswered_queries/${id}`), {
+                    status: 'pending',
+                    resolvedFaqId: null,
+                    ignoredAt: null,
+                    resolvedAt: null,
+                });
+                showToast("ຄືນສະຖານະ 'ລໍຖ້າ' ແລ້ວ");
+            } catch (e) {showToast("ຜິດພາດ", "error");}
+        };
+
+        window.deleteQuery = async function (id) {
+            if (!confirm("ລົບຄຳຖາມນີ້?")) return;
+            try {
+                await remove(ref(db, `unanswered_queries/${id}`));
+                playSound('delete');
+                showToast("ລົບສຳເລັດ");
+            } catch (e) {showToast("ຜິດພາດ", "error");}
+        };
+
+        window.clearResolvedQueries = async function () {
+            const resolved = rawUnanswered.filter(q => q.status === 'resolved');
+            if (resolved.length === 0) return showToast("ບໍ່ມີທີ່ແກ້ໄຂແລ້ວ", "error");
+            if (!confirm(`ລຶບ ${resolved.length} ຄຳຖາມທີ່ແກ້ໄຂແລ້ວ?`)) return;
+            try {
+                for (const q of resolved) {
+                    await remove(ref(db, `unanswered_queries/${q.id}`));
+                }
+                showToast(`ລຶບ ${resolved.length} ລາຍການແລ້ວ`);
+            } catch (e) {showToast("ຜິດພາດ", "error");}
+        };
+
+        window.viewResolvedFAQ = function (faqId) {
+            switchTab('faqs');
+            setTimeout(() => {
+                const faq = rawFAQs.find(f => f.id === faqId);
+                if (faq) showToast(`FAQ: "${faq.question.substring(0, 50)}..."`);
+            }, 100);
+        };
+
+        window.filterUnanswered = function (filter) {
+            currentUnansweredFilter = filter;
+            ['all', 'pending', 'resolved', 'ignored'].forEach(f => {
+                const btn = document.getElementById(`uf-${f}`);
+                if (!btn) return;
+                if (f === filter) {
+                    btn.className = "unanswered-filter-btn active px-3.5 py-2 rounded-xl text-xs font-medium border border-amber-500/40";
+                } else {
+                    btn.className = "unanswered-filter-btn px-3.5 py-2 rounded-xl text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700 hover:bg-slate-700";
+                }
+            });
+            renderUnansweredList();
+        };
+
+        // ===== CSV / SEED =====
         window.exportCSV = function () {
             if (rawFAQs.length === 0) return showToast("ບໍ່ມີຂໍ້ມູນ", "error");
             const headers = ['question', 'answer', 'category', 'isPinned', 'usageCount'];
-            const rows = rawFAQs.map(f =>
-                headers.map(h => `"${String(f[h] ?? '').replace(/"/g, '""')}"`).join(',')
-            );
+            const rows = rawFAQs.map(f => headers.map(h => `"${String(f[h] ?? '').replace(/"/g, '""')}"`).join(','));
             const csv = [headers.join(','), ...rows].join('\n');
             const blob = new Blob(['\uFEFF' + csv], {type: 'text/csv;charset=utf-8'});
             const url = URL.createObjectURL(blob);
@@ -854,14 +1164,11 @@
         window.seedDefaultData = async function () {
             if (!confirm("ເພີ່ມ FAQ ຕົວຢ່າງ 8 ຄຳຖາມ?")) return;
             const defaults = [
-                {category: "ທີ່ຕັ້ງ & ທົ່ວໄປ", question: "ຮ້ານຕັ້ງຢູ່ໃສ ແລະ ເປີດຈັກໂມງ?", answer: "📍 <b>ຮ້ານແປງໂທລະສັບຟູຈິ</b> ຕັ້ງຢູ່ແຄມທາງໃຫຍ່ ໃກ້ຕະຫຼາດດົງໂດກ.<br>⏰ ເປີດບໍລິການທຸກມື້: <b>08:30 - 19:00 ໂມງ</b>.", isPinned: true},
-                {category: "ປ່ຽນໜ້າຈໍ", question: "ປ່ຽນໜ້າຈໍໂທລະສັບ ໃຊ້ເວລາດົນປານໃດ?", answer: "📱 ປ່ຽນໜ້າຈໍໃຊ້ເວລາປະມານ <b>30 - 60 ນາທີ</b> (ຂຶ້ນກັບລຸ້ນ).", isPinned: true},
-                {category: "ປະກັນ & ເວລາ", question: "ມີປະກັນຫຼັງການແປງບໍ?", answer: "🛡️ ມີຮັບປະກັນ <b>30 - 90 ມື້</b> ຕາມເງື່ອນໄຂ.", isPinned: false},
+                {category: "ທີ່ຕັ້ງ & ທົ່ວໄປ", question: "ຮ້ານຕັ້ງຢູ່ໃສ ແລະ ເປີດຈັກໂມງ?", answer: "📍 <b>ຮ້ານແປງໂທລະສັບຟູຈິ</b> ຕັ້ງຢູ່ແຄມທາງໃຫຍ່ ໃກ້ຕະຫຼາດດົງໂດກ.<br>⏰ ເປີດທຸກມື້: <b>08:30 - 19:00 ໂມງ</b>.", isPinned: true},
+                {category: "ປ່ຽນໜ້າຈໍ", question: "ປ່ຽນໜ້າຈໍໂທລະສັບ ໃຊ້ເວລາດົນປານໃດ?", answer: "📱 ປ່ຽນໜ້າຈໍໃຊ້ເວລາ <b>30 - 60 ນາທີ</b> ຂຶ້ນກັບລຸ້ນ.", isPinned: true},
                 {category: "ປ່ຽນແບັດເຕີຣີ", question: "ປ່ຽນແບັດເຕີຣີ ລາຄາເທົ່າໃດ?", answer: "🔋 ເລີ່ມ <b>120,000 ກີບ</b> ຮັບປະກັນ 6 ເດືອນ.", isPinned: false},
+                {category: "ປະກັນ & ເວລາ", question: "ມີປະກັນຫຼັງການແປງບໍ?", answer: "🛡️ ມີຮັບປະກັນ <b>30 - 90 ມື້</b>.", isPinned: false},
                 {category: "ທີ່ຕັ້ງ & ທົ່ວໄປ", question: "ໂທລະສັບຕົກນ້ຳ ແປງໄດ້ບໍ?", answer: "💧 ແປງໄດ້! ຟ້າວນຳມາຮ້ານ ຢ່າສຽບສາຍຊາດ.", isPinned: false},
-                {category: "ປົດລັອກ & ຊອບແວ", question: "ລືມລະຫັດຜ່ານໜ້າຈໍ ປົດລັອກໄດ້ບໍ?", answer: "🔓 ປົດໄດ້ ໃຊ້ເວລາ 1-3 ມື້.", isPinned: false},
-                {category: "ປ່ຽນໜ້າຈໍ", question: "ໜ້າຈໍແຕກ ແຕ່ຍັງກົດໄດ້ ຕ້ອງປ່ຽນຍົກຊຸດບໍ?", answer: "🔍 ສາມາດ <b>ອັດກະຈົກ</b> ໄດ້ ຖືກກວ່າເຄິ່ງ.", isPinned: false},
-                {category: "ປະກັນ & ເວລາ", question: "ກວດເຊັກເຄື່ອງຟຣີບໍ?", answer: "👨‍🔧 ກວດຟຣີ 100% ບໍ່ເສຍຄ່າ.", isPinned: false},
             ];
             try {
                 for (const item of defaults) {
@@ -869,16 +1176,17 @@
                     await set(newRef, {...item, isHidden: false, usageCount: 0, createdAt: Date.now()});
                 }
                 playSound('success');
-                showToast("Seed ສຳເລັດ 8 ຄຳຖາມ!");
+                showToast("Seed ສຳເລັດ!");
             } catch (e) {showToast("ຜິດພາດ", "error");}
         };
 
         window.filterFAQs = renderFAQs;
 
         window.switchTab = function (tabName) {
-            ['overview', 'faqs', 'feedback'].forEach(t => {
+            ['overview', 'faqs', 'unanswered', 'feedback'].forEach(t => {
                 const view = document.getElementById(`view-${t}`);
                 const btn = document.getElementById(`tab-btn-${t}`);
+                if (!view || !btn) return;
                 if (t === tabName) {view.classList.remove('hidden'); btn.classList.add('active');}
                 else {view.classList.add('hidden'); btn.classList.remove('active');}
             });
@@ -886,9 +1194,7 @@
 
         function escapeHtml(text) {
             if (!text) return '';
-            const div = document.createElement('div');
-            div.innerText = text;
-            return div.innerHTML;
+            return String(text).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
         }
 
         function showToast(message, type = 'info') {
