@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ແຜງຄວບຄຸມແອດມິນ ຮ້ານຟູຈິ - Fuji Admin Panel v2</title>
+    <title>ແຜງຄວບຄຸມແອດມິນ ຮ້ານຟູຈິ - Fuji Admin Panel v3</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -107,6 +107,23 @@
             color: #fcd34d;
             border-color: rgba(245, 158, 11, 0.5);
         }
+
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        #sidebar.hidden {
+            display: none;
+        }
+
+        @media (min-width: 768px) {
+            #sidebar.hidden {
+                display: flex;
+            }
+        }
     </style>
 </head>
 
@@ -128,7 +145,7 @@
                     class="font-extrabold text-base sm:text-lg text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-teal-200 to-indigo-300 leading-tight">
                     Fuji Admin Control Panel
                 </h1>
-                <p class="text-[11px] text-slate-400">ລະບົບຈັດການຂໍ້ມູນ ແລະ ສອນ AI v2.0</p>
+                <p class="text-[11px] text-slate-400">ລະບົບຈັດການຂໍ້ມູນ ແລະ ສອນ AI v3.0</p>
             </div>
         </div>
         <div class="flex items-center space-x-3">
@@ -153,13 +170,21 @@
 
         <aside id="sidebar"
             class="glass-sidebar w-64 flex-col justify-between hidden md:flex absolute md:relative z-20 h-full transition-all">
-            <div class="p-4 space-y-1.5">
+            <div class="p-4 space-y-1.5 overflow-y-auto">
                 <div class="px-3 py-2 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">ເມນູຫຼັກ</div>
 
                 <button onclick="switchTab('overview')" id="tab-btn-overview"
                     class="tab-btn active w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl border border-transparent text-slate-300 hover:text-white hover:bg-slate-800/50 transition text-sm">
                     <div class="flex items-center gap-3"><i
                             class="fa-solid fa-chart-pie text-cyan-400 w-5"></i><span>ພາບລວມ</span></div>
+                </button>
+
+                <button onclick="switchTab('photos')" id="tab-btn-photos"
+                    class="tab-btn w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl border border-transparent text-slate-300 hover:text-white hover:bg-slate-800/50 transition text-sm">
+                    <div class="flex items-center gap-3"><i
+                            class="fa-solid fa-images text-emerald-400 w-5"></i><span>ຮູບຈາກລູກຄ້າ</span></div>
+                    <span id="badge-photos-count"
+                        class="bg-slate-800 text-slate-400 border border-slate-700 text-[11px] px-2 py-0.5 rounded-full font-mono">0</span>
                 </button>
 
                 <button onclick="switchTab('faqs')" id="tab-btn-faqs"
@@ -192,7 +217,8 @@
                 <div class="flex items-center gap-2 mb-2 text-xs font-semibold text-cyan-400"><i
                         class="fa-solid fa-store"></i> ຮ້ານ Fuji Repair</div>
                 <p class="text-[11px] text-slate-400 leading-relaxed mb-2">ຮ້ານແປງໂທລະສັບຟູຈິ ບໍລິການແປງທຸກອາການ.</p>
-                <div class="text-[10px] text-slate-500 font-mono">/faqs /unanswered_queries /developer_feedback</div>
+                <div class="text-[10px] text-slate-500 font-mono">/faqs /photo_inbox /unanswered_queries
+                    /developer_feedback</div>
             </div>
         </aside>
 
@@ -206,100 +232,98 @@
                     </div>
                     <div class="relative z-10">
                         <span
-                            class="px-3 py-1 rounded-full text-xs font-semibold bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
-                            Fuji AI Smart Engine v2.0
-                        </span>
+                            class="px-3 py-1 rounded-full text-xs font-semibold bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">Fuji
+                            AI Smart Engine v3.0</span>
                         <h2 class="text-2xl sm:text-3xl font-bold text-white mt-3 mb-2">ຍິນດີຕ້ອນຮັບສູ່ ແຜງຄວບຄຸມ 🛠️
                         </h2>
                         <p class="text-slate-300 text-sm max-w-2xl leading-relaxed">
-                            ຈັດການ FAQ, ຕອບຄຳຖາມທີ່ AI ຕອບບໍ່ໄດ້, ແລະ ສອນ AI ໃຫ້ເກັ່ງຂຶ້ນແບບ Real-time
+                            ຈັດການ FAQ, ຮັບຮູບຈາກລູກຄ້າ, ຕອບຄຳຖາມທີ່ AI ຕອບບໍ່ໄດ້, ແລະ ສອນ AI ໃຫ້ເກັ່ງຂຶ້ນແບບ Real-time
                         </p>
                     </div>
                 </div>
 
                 <!-- Stats -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-                    <div class="glass-card p-5 rounded-2xl border border-slate-800">
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+                    <div class="glass-card p-4 rounded-2xl border border-emerald-500/20">
                         <div class="flex justify-between items-start">
                             <div>
-                                <p class="text-xs text-slate-400 font-medium">FAQ ທັງໝົດ</p>
-                                <h3 id="stat-total-faqs" class="text-3xl font-bold text-white mt-1 font-tech">0</h3>
-                            </div>
-                            <div
-                                class="w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center border border-cyan-500/20">
-                                <i class="fa-solid fa-file-lines text-lg"></i>
-                            </div>
-                        </div>
-                        <div class="mt-4 text-[11px] text-slate-400 flex items-center gap-1">
-                            <i class="fa-solid fa-circle-check text-emerald-400"></i> พร้อมใช้งาน
-                        </div>
-                    </div>
-
-                    <div class="glass-card p-5 rounded-2xl border border-slate-800">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <p class="text-xs text-slate-400 font-medium">ສະແດງ Chip</p>
-                                <h3 id="stat-visible-faqs" class="text-3xl font-bold text-emerald-400 mt-1 font-tech">0
+                                <p class="text-[11px] text-slate-400 font-medium">ຮູບໃໝ່</p>
+                                <h3 id="stat-new-photos" class="text-2xl font-bold text-emerald-400 mt-1 font-tech">0
                                 </h3>
                             </div>
                             <div
-                                class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20">
-                                <i class="fa-solid fa-eye text-lg"></i>
+                                class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20">
+                                <i class="fa-solid fa-images"></i>
                             </div>
-                        </div>
-                        <div class="mt-4 text-[11px] text-slate-400 flex items-center gap-1">
-                            <i class="fa-solid fa-star text-amber-400"></i> ສະແດງໃນແອັບ
                         </div>
                     </div>
 
-                    <div class="glass-card p-5 rounded-2xl border border-slate-800">
+                    <div class="glass-card p-4 rounded-2xl border border-slate-800">
                         <div class="flex justify-between items-start">
                             <div>
-                                <p class="text-xs text-slate-400 font-medium">FAQ ຊ່ອນ</p>
-                                <h3 id="stat-hidden-faqs" class="text-3xl font-bold text-slate-400 mt-1 font-tech">0
-                                </h3>
+                                <p class="text-[11px] text-slate-400 font-medium">FAQ ທັງໝົດ</p>
+                                <h3 id="stat-total-faqs" class="text-2xl font-bold text-white mt-1 font-tech">0</h3>
                             </div>
                             <div
-                                class="w-10 h-10 rounded-xl bg-slate-800 text-slate-400 flex items-center justify-center border border-slate-700">
-                                <i class="fa-solid fa-eye-slash text-lg"></i>
+                                class="w-9 h-9 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center border border-cyan-500/20">
+                                <i class="fa-solid fa-file-lines"></i>
                             </div>
-                        </div>
-                        <div class="mt-4 text-[11px] text-slate-400 flex items-center gap-1">
-                            <i class="fa-solid fa-ghost text-slate-400"></i> AI ຍັງຕອບໄດ້
                         </div>
                     </div>
 
-                    <div class="glass-card p-5 rounded-2xl border border-amber-500/20">
+                    <div class="glass-card p-4 rounded-2xl border border-slate-800">
                         <div class="flex justify-between items-start">
                             <div>
-                                <p class="text-xs text-slate-400 font-medium">ລໍຖ້າຕອບ</p>
-                                <h3 id="stat-pending-queries" class="text-3xl font-bold text-amber-400 mt-1 font-tech">0
+                                <p class="text-[11px] text-slate-400 font-medium">ສະແດງ Chip</p>
+                                <h3 id="stat-visible-faqs" class="text-2xl font-bold text-emerald-400 mt-1 font-tech">0
                                 </h3>
                             </div>
                             <div
-                                class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center border border-amber-500/20">
-                                <i class="fa-solid fa-circle-question text-lg"></i>
+                                class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20">
+                                <i class="fa-solid fa-eye"></i>
                             </div>
-                        </div>
-                        <div class="mt-4 text-[11px] text-slate-400 flex items-center gap-1">
-                            <i class="fa-solid fa-lightbulb text-amber-400"></i> ໂອກາດສອນ AI
                         </div>
                     </div>
 
-                    <div class="glass-card p-5 rounded-2xl border border-slate-800">
+                    <div class="glass-card p-4 rounded-2xl border border-slate-800">
                         <div class="flex justify-between items-start">
                             <div>
-                                <p class="text-xs text-slate-400 font-medium">ຄວາມຄິດເຫັນ</p>
-                                <h3 id="stat-total-feedback" class="text-3xl font-bold text-pink-400 mt-1 font-tech">0
+                                <p class="text-[11px] text-slate-400 font-medium">FAQ ຊ່ອນ</p>
+                                <h3 id="stat-hidden-faqs" class="text-2xl font-bold text-slate-400 mt-1 font-tech">0
                                 </h3>
                             </div>
                             <div
-                                class="w-10 h-10 rounded-xl bg-pink-500/10 text-pink-400 flex items-center justify-center border border-pink-500/20">
-                                <i class="fa-solid fa-comment-dots text-lg"></i>
+                                class="w-9 h-9 rounded-xl bg-slate-800 text-slate-400 flex items-center justify-center border border-slate-700">
+                                <i class="fa-solid fa-eye-slash"></i>
                             </div>
                         </div>
-                        <div class="mt-4 text-[11px] text-slate-400 flex items-center gap-1">
-                            <i class="fa-solid fa-inbox text-pink-400"></i> ຈາກລູກຄ້າ
+                    </div>
+
+                    <div class="glass-card p-4 rounded-2xl border border-amber-500/20">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-[11px] text-slate-400 font-medium">ລໍຖ້າຕອບ</p>
+                                <h3 id="stat-pending-queries" class="text-2xl font-bold text-amber-400 mt-1 font-tech">0
+                                </h3>
+                            </div>
+                            <div
+                                class="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center border border-amber-500/20">
+                                <i class="fa-solid fa-circle-question"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-4 rounded-2xl border border-slate-800">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-[11px] text-slate-400 font-medium">ຄວາມຄິດເຫັນ</p>
+                                <h3 id="stat-total-feedback" class="text-2xl font-bold text-pink-400 mt-1 font-tech">0
+                                </h3>
+                            </div>
+                            <div
+                                class="w-9 h-9 rounded-xl bg-pink-500/10 text-pink-400 flex items-center justify-center border border-pink-500/20">
+                                <i class="fa-solid fa-comment-dots"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -349,7 +373,38 @@
                 </div>
             </div>
 
-            <!-- TAB 2: FAQS -->
+            <!-- TAB 2: PHOTOS (NEW) -->
+            <div id="view-photos" class="hidden space-y-6">
+                <div
+                    class="glass-card p-5 rounded-3xl border border-emerald-500/20 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                    <div>
+                        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-images text-emerald-400"></i> ຮູບຈາກລູກຄ້າ
+                        </h2>
+                        <p class="text-xs text-slate-400 mt-0.5">ຕິດຕໍ່ລູກຄ້າທາງ WhatsApp • ລຶບເພື່ອຄືນພື້ນທີ່ Firebase
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <span id="photos-storage-info"
+                            class="text-[11px] text-slate-400 font-mono bg-slate-900 border border-slate-700 px-3 py-1.5 rounded-lg">
+                            <i class="fa-solid fa-database text-cyan-400"></i> 0 ຮູບ • 0 KB
+                        </span>
+                        <button onclick="clearSeenPhotos()"
+                            class="text-xs text-slate-400 hover:text-white bg-slate-800/60 hover:bg-slate-700 border border-slate-700 px-3 py-2 rounded-xl transition flex items-center gap-1.5 active:scale-95">
+                            <i class="fa-solid fa-broom"></i> ລຶບທີ່ເບິ່ງແລ້ວ
+                        </button>
+                    </div>
+                </div>
+
+                <div id="photos-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="col-span-full text-center py-12 text-xs text-slate-500">
+                        <i class="fa-solid fa-circle-notch animate-spin text-emerald-400 text-lg mb-2"></i>
+                        <p>ກຳລັງໂຫຼດ...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: FAQS -->
             <div id="view-faqs" class="hidden space-y-6">
                 <div
                     class="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center glass-card p-5 rounded-3xl border border-slate-800">
@@ -404,7 +459,7 @@
                 </div>
             </div>
 
-            <!-- TAB 3: UNANSWERED QUERIES -->
+            <!-- TAB 4: UNANSWERED QUERIES -->
             <div id="view-unanswered" class="hidden space-y-6">
                 <div
                     class="glass-card p-5 rounded-3xl border border-amber-500/20 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
@@ -447,7 +502,7 @@
                 </div>
             </div>
 
-            <!-- TAB 4: FEEDBACK -->
+            <!-- TAB 5: FEEDBACK -->
             <div id="view-feedback" class="hidden space-y-6">
                 <div class="glass-card p-5 rounded-3xl border border-slate-800 flex justify-between items-center">
                     <div>
@@ -548,7 +603,7 @@
 
     <!-- Toast -->
     <div id="toast"
-        class="fixed top-5 right-5 transform translate-y-[-160%] opacity-0 transition-all duration-300 glass-card border border-cyan-500/40 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center space-x-3 z-50">
+        class="fixed top-5 right-5 transform translate-y-[-160%] opacity-0 transition-all duration-300 glass-card border border-cyan-500/40 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center space-x-3 z-[60]">
         <div id="toast-icon"
             class="w-8 h-8 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center shrink-0">
             <i class="fa-solid fa-check"></i>
@@ -556,7 +611,6 @@
         <div id="toast-message" class="text-xs sm:text-sm font-medium"></div>
     </div>
 
-    <!-- Firebase -->
     <script type="module">
         import {initializeApp} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import {getDatabase, ref, onValue, push, set, remove, update, get} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
@@ -577,6 +631,7 @@
         let rawFAQs = [];
         let rawFeedback = [];
         let rawUnanswered = [];
+        let rawPhotos = [];
         let currentUnansweredFilter = 'all';
         let audioCtx = null;
 
@@ -608,6 +663,13 @@
                     osc.frequency.setValueAtTime(300, ctx.currentTime);
                     osc.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.15);
                     gain.gain.setValueAtTime(0.1, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
+                    osc.start(); osc.stop(ctx.currentTime + 0.15);
+                } else if (type === 'whatsapp') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(800, ctx.currentTime);
+                    osc.frequency.setValueAtTime(1000, ctx.currentTime + 0.06);
+                    gain.gain.setValueAtTime(0.08, ctx.currentTime);
                     gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
                     osc.start(); osc.stop(ctx.currentTime + 0.15);
                 }
@@ -663,7 +725,6 @@
             rawUnanswered = [];
             if (data) {
                 Object.keys(data).forEach(id => rawUnanswered.push({id, ...data[id]}));
-                // เรียง: pending ก่อน, แล้วตาม lastAskedAt
                 rawUnanswered.sort((a, b) => {
                     const statusOrder = {pending: 0, resolved: 1, ignored: 2};
                     const aO = statusOrder[a.status] ?? 1;
@@ -678,19 +739,41 @@
             renderOverviewPending();
         });
 
+        // ===== PHOTOS LISTENER =====
+        const photosRef = ref(db, 'photo_inbox');
+        onValue(photosRef, (snapshot) => {
+            const data = snapshot.val() || {};
+            rawPhotos = Object.keys(data).map(id => ({id, ...data[id]}))
+                .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            updateStats();
+            renderPhotos();
+        });
+
         // ===== STATS =====
         function updateStats() {
             const visible = rawFAQs.filter(f => f.isPinned).length;
             const hidden = rawFAQs.filter(f => !f.isPinned).length;
             const pending = rawUnanswered.filter(q => q.status === 'pending').length;
+            const newPhotos = rawPhotos.filter(p => p.status === 'pending').length;
 
             document.getElementById('stat-total-faqs').innerText = rawFAQs.length;
             document.getElementById('stat-visible-faqs').innerText = visible;
             document.getElementById('stat-hidden-faqs').innerText = hidden;
             document.getElementById('stat-total-feedback').innerText = rawFeedback.length;
             document.getElementById('stat-pending-queries').innerText = pending;
+            document.getElementById('stat-new-photos').innerText = newPhotos;
             document.getElementById('badge-faq-count').innerText = rawFAQs.length;
             document.getElementById('badge-feedback-count').innerText = rawFeedback.length;
+
+            const photoBadge = document.getElementById('badge-photos-count');
+            if (photoBadge) {
+                photoBadge.innerText = newPhotos;
+                if (newPhotos === 0) {
+                    photoBadge.className = "bg-slate-800 text-slate-400 border border-slate-700 text-[11px] px-2 py-0.5 rounded-full font-mono";
+                } else {
+                    photoBadge.className = "bg-emerald-950 text-emerald-300 border border-emerald-800 text-[11px] px-2 py-0.5 rounded-full font-mono animate-pulse";
+                }
+            }
         }
 
         function updateUnansweredBadge() {
@@ -706,6 +789,133 @@
                 badge.className = "bg-amber-950 text-amber-300 border border-amber-800 text-[11px] px-2 py-0.5 rounded-full font-mono";
             }
         }
+
+        // ===== RENDER: PHOTOS =====
+        function renderPhotos() {
+            const grid = document.getElementById('photos-grid');
+            const info = document.getElementById('photos-storage-info');
+            if (!grid) return;
+
+            const totalKB = rawPhotos.reduce((sum, p) => sum + (p.sizeKB || 0), 0);
+            if (info) info.innerHTML = `<i class="fa-solid fa-database text-cyan-400"></i> ${rawPhotos.length} ຮູບ • ${(totalKB / 1024).toFixed(2)} MB / 1 GB`;
+
+            if (rawPhotos.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-12 glass-card rounded-2xl border border-slate-800">
+                    <i class="fa-solid fa-image text-slate-600 text-4xl mb-3"></i>
+                    <p class="text-sm text-slate-400">ຍັງບໍ່ມີຮູບຈາກລູກຄ້າ</p>
+                </div>`;
+                return;
+            }
+
+            grid.innerHTML = rawPhotos.map(p => `
+                <div class="glass-card rounded-2xl overflow-hidden border ${p.status === 'pending' ? 'border-emerald-500/60 ring-2 ring-emerald-500/20' : 'border-slate-800'} faq-card-enter">
+                    <div class="relative aspect-video bg-slate-950 overflow-hidden">
+                        <img src="${p.thumbnailBase64}" class="w-full h-full object-cover cursor-pointer hover:opacity-90 transition"
+                             onclick="viewFullPhoto('${p.id}')" alt="photo" loading="lazy">
+                        ${p.status === 'pending'
+                    ? '<span class="absolute top-2 right-2 bg-emerald-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-lg animate-pulse">ໃໝ່</span>'
+                    : '<span class="absolute top-2 right-2 bg-slate-700/90 text-slate-300 text-[9px] px-2 py-0.5 rounded-full">✓ ເຫັນແລ້ວ</span>'}
+                        <span class="absolute bottom-2 left-2 bg-black/70 text-white text-[9px] font-mono px-2 py-0.5 rounded">${p.sizeKB || '?'} KB</span>
+                    </div>
+                    <div class="p-3 space-y-2">
+                        <div class="flex items-center gap-1.5">
+                            <i class="fa-solid fa-mobile-screen text-cyan-400 text-xs shrink-0"></i>
+                            <p class="text-xs font-bold text-slate-100 truncate">${escapeHtml(p.deviceModel || 'ບໍ່ລະບຸ')}</p>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <i class="fa-solid fa-screwdriver-wrench text-amber-400 text-xs shrink-0"></i>
+                            <p class="text-[11px] text-slate-300 truncate">${escapeHtml(p.symptom || '-')}</p>
+                        </div>
+                        ${p.note ? `<p class="text-[10px] text-slate-400 bg-slate-950/60 p-2 rounded line-clamp-2">${escapeHtml(p.note)}</p>` : ''}
+                        <div class="flex items-center justify-between text-[10px] text-slate-500 font-mono">
+                            <span><i class="fa-regular fa-clock"></i> ${formatTimeAgo(p.timestamp)}</span>
+                            <span class="text-emerald-400"><i class="fa-brands fa-whatsapp"></i> ${escapeHtml(p.whatsapp || '-')}</span>
+                        </div>
+                        <div class="pt-2 border-t border-slate-800 flex gap-1.5">
+                            <a href="${buildWhatsAppLink(p)}" target="_blank" onclick="playSound('whatsapp')"
+                               class="flex-1 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white text-[11px] font-bold py-2 rounded-lg text-center shadow-md flex items-center justify-center gap-1.5 active:scale-95">
+                                <i class="fa-brands fa-whatsapp text-sm"></i> ທັກ WhatsApp
+                            </a>
+                            ${p.status === 'pending'
+                    ? `<button onclick="markPhotoSeen('${p.id}')" title="ໝາຍວ່າເຫັນແລ້ວ"
+                                    class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-2 rounded-lg text-[11px] active:scale-95">
+                                    <i class="fa-solid fa-check"></i>
+                                   </button>`
+                    : ''}
+                            <button onclick="deletePhoto('${p.id}')" title="ລຶບ (ຄືນພື້ນທີ່)"
+                                class="bg-rose-950/60 hover:bg-rose-900/80 text-rose-400 border border-rose-800/50 px-2.5 py-2 rounded-lg text-[11px] active:scale-95">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function buildWhatsAppLink(p) {
+            const phone = (p.whatsapp || '').replace(/[^\d+]/g, '').replace(/^\+/, '');
+            const msg = `ສະບາຍດີ! ທາງຊ່າງຮ້ານຟູຈິໄດ້ຮັບຮູບ ແລະ ຂໍ້ມູນຂອງທ່ານແລ້ວ 🙏\n\n📱 ເຄື່ອງ: ${p.deviceModel || '-'}\n🔧 ອາການ: ${p.symptom || '-'}${p.note ? `\n📝 ລາຍລະອຽດ: ${p.note}` : ''}\n\nຂໍສອບຖາມເພີ່ມເຕີມ ແລະ ແຈ້ງລາຄາໃຫ້ທ່ານໄດ້ເລີຍຄະ.`;
+            return `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+        }
+
+        window.viewFullPhoto = (id) => {
+            const p = rawPhotos.find(x => x.id === id);
+            if (!p) return;
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black/95 z-[100] flex items-center justify-center p-4';
+            modal.onclick = (e) => {if (e.target === modal) modal.remove();};
+            modal.innerHTML = `
+                <div class="relative max-w-4xl w-full">
+                    <img src="${p.fullBase64 || p.thumbnailBase64}" class="w-full h-auto rounded-lg shadow-2xl max-h-[85vh] object-contain">
+                    <div class="absolute top-3 right-3 flex gap-2">
+                        <a href="${buildWhatsAppLink(p)}" target="_blank" onclick="playSound('whatsapp')"
+                           class="bg-emerald-500 hover:bg-emerald-400 text-white px-3 py-2 rounded-lg backdrop-blur flex items-center gap-1.5 text-xs font-bold active:scale-95">
+                            <i class="fa-brands fa-whatsapp"></i> ທັກ
+                        </a>
+                        <button onclick="this.closest('.fixed').remove()"
+                            class="bg-white/20 hover:bg-white/30 text-white p-2 rounded-lg backdrop-blur">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                    <div class="absolute bottom-3 left-3 right-3 bg-black/80 backdrop-blur p-3 rounded-lg text-white text-xs">
+                        <p class="font-bold text-sm">📱 ${escapeHtml(p.deviceModel || '-')}</p>
+                        <p class="text-[11px] text-slate-300 mt-0.5">🔧 ${escapeHtml(p.symptom || '-')}</p>
+                        ${p.note ? `<p class="text-[10px] text-slate-400 mt-1">📝 ${escapeHtml(p.note)}</p>` : ''}
+                        <p class="text-[11px] text-emerald-400 mt-1.5 font-mono"><i class="fa-brands fa-whatsapp"></i> ${escapeHtml(p.whatsapp || '-')}</p>
+                    </div>
+                </div>`;
+            document.body.appendChild(modal);
+            if (p.status === 'pending') markPhotoSeen(id);
+        };
+
+        window.markPhotoSeen = async (id) => {
+            try {
+                await update(ref(db, `photo_inbox/${id}`), {status: 'seen', seenAt: new Date().toISOString()});
+                showToast('✓ ໝາຍວ່າເຫັນແລ້ວ');
+            } catch (e) {showToast('ຜິດພາດ', 'error');}
+        };
+
+        window.deletePhoto = async (id) => {
+            const p = rawPhotos.find(x => x.id === id);
+            if (!p) return;
+            if (!confirm(`ລຶບຮູບນີ້?\n\n📱 ${p.deviceModel || '-'}\n🔧 ${p.symptom || '-'}\n\n(ຈະລຶບອອກຈາກ Firebase ທັງໝົດ — ຄືນພື້ນທີ່ ${p.sizeKB || '?'} KB)`)) return;
+            try {
+                await remove(ref(db, `photo_inbox/${id}`));
+                playSound('delete');
+                showToast(`🗑 ລຶບແລ້ວ • ຄືນພື້ນທີ່ ${p.sizeKB || '?'} KB`);
+            } catch (e) {showToast('ຜິດພາດ', 'error');}
+        };
+
+        window.clearSeenPhotos = async () => {
+            const seen = rawPhotos.filter(p => p.status === 'seen');
+            if (seen.length === 0) return showToast('ບໍ່ມີຮູບທີ່ເບິ່ງແລ້ວ', 'error');
+            const totalKB = seen.reduce((s, p) => s + (p.sizeKB || 0), 0);
+            if (!confirm(`ລຶບ ${seen.length} ຮູບທີ່ເບິ່ງແລ້ວ?\nຈະຄືນພື້ນທີ່ ${(totalKB / 1024).toFixed(2)} MB`)) return;
+            try {
+                for (const p of seen) await remove(ref(db, `photo_inbox/${p.id}`));
+                showToast(`🗑 ລຶບ ${seen.length} ຮູບແລ້ວ`);
+            } catch (e) {showToast('ຜິດພາດ', 'error');}
+        };
 
         // ===== RENDER: FAQS =====
         function renderFAQs() {
@@ -964,7 +1174,6 @@
             document.getElementById('faq-modal').classList.remove('hidden');
         };
 
-        // ⭐ Convert from unanswered query
         window.openConvertToFAQModal = function (queryId) {
             const q = rawUnanswered.find(x => x.id === queryId);
             if (!q) return;
@@ -976,7 +1185,6 @@
             document.getElementById('form-faq-show-chip').checked = true;
             document.getElementById('convert-info').classList.remove('hidden');
 
-            // Pre-fill category + answer จาก closest
             if (q.closestFaqId) {
                 const closest = rawFAQs.find(f => f.id === q.closestFaqId);
                 if (closest) {
@@ -1162,7 +1370,7 @@
         };
 
         window.seedDefaultData = async function () {
-            if (!confirm("ເພີ່ມ FAQ ຕົວຢ່າງ 8 ຄຳຖາມ?")) return;
+            if (!confirm("ເພີ່ມ FAQ ຕົວຢ່າງ 5 ຄຳຖາມ?")) return;
             const defaults = [
                 {category: "ທີ່ຕັ້ງ & ທົ່ວໄປ", question: "ຮ້ານຕັ້ງຢູ່ໃສ ແລະ ເປີດຈັກໂມງ?", answer: "📍 <b>ຮ້ານແປງໂທລະສັບຟູຈິ</b> ຕັ້ງຢູ່ແຄມທາງໃຫຍ່ ໃກ້ຕະຫຼາດດົງໂດກ.<br>⏰ ເປີດທຸກມື້: <b>08:30 - 19:00 ໂມງ</b>.", isPinned: true},
                 {category: "ປ່ຽນໜ້າຈໍ", question: "ປ່ຽນໜ້າຈໍໂທລະສັບ ໃຊ້ເວລາດົນປານໃດ?", answer: "📱 ປ່ຽນໜ້າຈໍໃຊ້ເວລາ <b>30 - 60 ນາທີ</b> ຂຶ້ນກັບລຸ້ນ.", isPinned: true},
@@ -1183,13 +1391,18 @@
         window.filterFAQs = renderFAQs;
 
         window.switchTab = function (tabName) {
-            ['overview', 'faqs', 'unanswered', 'feedback'].forEach(t => {
+            ['overview', 'photos', 'faqs', 'unanswered', 'feedback'].forEach(t => {
                 const view = document.getElementById(`view-${t}`);
                 const btn = document.getElementById(`tab-btn-${t}`);
                 if (!view || !btn) return;
                 if (t === tabName) {view.classList.remove('hidden'); btn.classList.add('active');}
                 else {view.classList.add('hidden'); btn.classList.remove('active');}
             });
+            // ปิด sidebar บน mobile
+            if (window.innerWidth < 768) {
+                document.getElementById('sidebar').classList.add('hidden');
+                document.getElementById('sidebar').classList.remove('flex');
+            }
         };
 
         function escapeHtml(text) {
@@ -1211,7 +1424,8 @@
             }
             toast.classList.remove('translate-y-[-160%]', 'opacity-0');
             toast.classList.add('translate-y-0', 'opacity-100');
-            setTimeout(() => {
+            clearTimeout(window.__toastTimeout);
+            window.__toastTimeout = setTimeout(() => {
                 toast.classList.remove('translate-y-0', 'opacity-100');
                 toast.classList.add('translate-y-[-160%]', 'opacity-0');
             }, 3000);
